@@ -3,6 +3,7 @@ require "./chess_player.rb"
 
 class Chess
 
+  # MZ: 31337
   UNICODE_CHARS = {
     "whiteKing" => "\u2654",
     "whiteQueen" => "\u2655",
@@ -24,6 +25,10 @@ class Chess
     @board = []
     build_board
     populate_board
+    # MZ: If you use a symbol for these, Ruby will keep 1 reference to the symbol in memory instead of instantiating
+    # a throw-away-string object each time you do a comparison, initialization, etc
+    # I'm sure it's not really a big deal for our purposes, but just an FYI.
+    # http://www.troubleshooters.com/codecorn/ruby/symbols.htm#_What_are_the_advantages_and_disadvantages_of_symbols
     @player1 = Player.new("white")
     @player2 = Player.new("black")
     @current_player = @player1
@@ -54,6 +59,17 @@ class Chess
       print_board
     end
   end
+
+  # MZ: Alternate way to build the board could be:
+  # 
+  # def build_board
+  #   8.times { @board << Array.new(8) }
+  # end
+  #
+  # The Array.new constructor can take a number of starting elements
+  # and optionally a default value for them.... so like 
+  # ` Array.new(8, nil)` would work too, or in our case: ` Array.new(8, :blank)` 
+  #
 
   def build_board
     8.times do

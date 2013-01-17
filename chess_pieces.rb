@@ -12,7 +12,7 @@ class Piece
   attr_accessor :moved
   attr_reader :color
 
-  alias_method :moved?, :moved
+  alias_method :moved?, :moved # MZ: nice
 
   def initialize(color)
     @color = color
@@ -49,7 +49,8 @@ end
 # ------------------------------------------------------------------------------
 
 class King < Piece
-  attr_reader :moves, :max_distance
+  # MZ: This stuff doesn't need to be in each sub class.  If you add it to the super class, sub classes get it for free.
+  attr_reader :moves, :max_distance 
 
   def initialize(color)
     super(color)
@@ -110,8 +111,8 @@ class Pawn < Piece
   # with existing or enemy pieces
   def theoretical_moves(start_row, start_column, board)
     moves = []#crazy logic going on here.
-
-    if self.color == "white"
+    # MZ: "Fuck Pawns." -Sean Kim, January 16th, 2013
+    if self.color == "white" # MZ: per ned's comments in today's lecture/questions, it looks like we should not be using the "self" calls
       moves << [[start_row + 1, start_column]] if board[start_row + 1][start_column].nil?
       if !moved? && board[start_row + 1][start_column].nil? && board[start_row + 2][start_column].nil?
         moves << [[start_row + 1, start_column], [start_row + 2, start_column]]
